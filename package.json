@@ -49,14 +49,22 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^10.1.4",
+    "@loopback/authentication-jwt": "^0.14.4",
     "@loopback/boot": "^6.1.4",
     "@loopback/core": "^5.1.4",
     "@loopback/repository": "^6.1.4",
     "@loopback/rest": "^13.1.4",
     "@loopback/rest-explorer": "^6.1.4",
     "@loopback/service-proxy": "^6.1.4",
+    "bcryptjs": "^2.4.3",
+    "exchange-rates-api": "^1.1.0",
+    "isemail": "^3.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "loopback-connector-postgresql": "^5.5.2",
     "md5": "^2.3.0",
+    "request": "^2.88.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
