@@ -1,9 +1,7 @@
-export * from './admin.repository';
-export * from './city-list.repository';
-export * from './country-list.repository';
-export * from './currency-type.repository';
 export * from './enquiry-type.repository';
-export * from './state-list.repository';
-export * from './user.repository';
-
-export * from './base-currency.repository';
+export * from './country.repository';
+export * from './state.repository';
+export * from './city.repository';
+export * from './testimonial.repository';
+export * from './setting.repository';
+export * from './faq.repository';

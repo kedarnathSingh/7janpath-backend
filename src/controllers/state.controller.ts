@@ -1,150 +1,97 @@
 import {
-  Count,
-  CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  repository
 } from '@loopback/repository';
 import {
-  post,
-  param,
   get,
   getModelSchemaRef,
+  param,
   patch,
-  put,
-  del,
+  post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import {StateList} from '../models';
-import {StateListRepository} from '../repositories';
+import {State} from '../models';
+import {StateRepository} from '../repositories';
 
 export class StateController {
   constructor(
-    @repository(StateListRepository)
-    public stateListRepository : StateListRepository,
-  ) {}
+    @repository(StateRepository)
+    public stateRepository: StateRepository,
+  ) { }
 
-  @post('/state-lists')
+  @post('/states')
   @response(200, {
-    description: 'StateList model instance',
-    content: {'application/json': {schema: getModelSchemaRef(StateList)}},
+    description: 'State model instance',
+    content: {'application/json': {schema: getModelSchemaRef(State)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(StateList, {
-            title: 'NewStateList',
+          schema: getModelSchemaRef(State, {
+            title: 'NewState',
             exclude: ['id'],
           }),
         },
       },
     })
-    stateList: Omit<StateList, 'id'>,
-  ): Promise<StateList> {
-    return this.stateListRepository.create(stateList);
+    state: Omit<State, 'id'>,
+  ): Promise<State> {
+    return this.stateRepository.create(state);
   }
 
-  @get('/state-lists/count')
+  @get('/states')
   @response(200, {
-    description: 'StateList model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(StateList) where?: Where<StateList>,
-  ): Promise<Count> {
-    return this.stateListRepository.count(where);
-  }
-
-  @get('/state-lists')
-  @response(200, {
-    description: 'Array of StateList model instances',
+    description: 'Array of State model instances',
     content: {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(StateList, {includeRelations: true}),
+          items: getModelSchemaRef(State, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(StateList) filter?: Filter<StateList>,
-  ): Promise<StateList[]> {
-    return this.stateListRepository.find(filter);
+    @param.filter(State) filter?: Filter<State>,
+  ): Promise<State[]> {
+    return this.stateRepository.find(filter);
   }
 
-  @patch('/state-lists')
+  @get('/states/{id}')
   @response(200, {
-    description: 'StateList PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(StateList, {partial: true}),
-        },
-      },
-    })
-    stateList: StateList,
-    @param.where(StateList) where?: Where<StateList>,
-  ): Promise<Count> {
-    return this.stateListRepository.updateAll(stateList, where);
-  }
-
-  @get('/state-lists/{id}')
-  @response(200, {
-    description: 'StateList model instance',
+    description: 'State model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(StateList, {includeRelations: true}),
+        schema: getModelSchemaRef(State, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(StateList, {exclude: 'where'}) filter?: FilterExcludingWhere<StateList>
-  ): Promise<StateList> {
-    return this.stateListRepository.findById(id, filter);
+    @param.filter(State, {exclude: 'where'}) filter?: FilterExcludingWhere<State>
+  ): Promise<State> {
+    return this.stateRepository.findById(id, filter);
   }
 
-  @patch('/state-lists/{id}')
+  @patch('/states/{id}')
   @response(204, {
-    description: 'StateList PATCH success',
+    description: 'State PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(StateList, {partial: true}),
+          schema: getModelSchemaRef(State, {partial: true}),
         },
       },
     })
-    stateList: StateList,
+    state: State,
   ): Promise<void> {
-    await this.stateListRepository.updateById(id, stateList);
+    await this.stateRepository.updateById(id, state);
   }
 
-  @put('/state-lists/{id}')
-  @response(204, {
-    description: 'StateList PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() stateList: StateList,
-  ): Promise<void> {
-    await this.stateListRepository.replaceById(id, stateList);
-  }
-
-  @del('/state-lists/{id}')
-  @response(204, {
-    description: 'StateList DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.stateListRepository.deleteById(id);
-  }
 }

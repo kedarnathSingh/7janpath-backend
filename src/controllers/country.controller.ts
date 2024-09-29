@@ -1,150 +1,97 @@
 import {
-  Count,
-  CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  repository
 } from '@loopback/repository';
 import {
-  post,
-  param,
   get,
   getModelSchemaRef,
+  param,
   patch,
-  put,
-  del,
+  post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import {CountryList} from '../models';
-import {CountryListRepository} from '../repositories';
+import {Country} from '../models';
+import {CountryRepository} from '../repositories';
 
 export class CountryController {
   constructor(
-    @repository(CountryListRepository)
-    public countryListRepository : CountryListRepository,
-  ) {}
+    @repository(CountryRepository)
+    public countryRepository: CountryRepository,
+  ) { }
 
-  @post('/country-lists')
+  @post('/countries')
   @response(200, {
-    description: 'CountryList model instance',
-    content: {'application/json': {schema: getModelSchemaRef(CountryList)}},
+    description: 'Country model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Country)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(CountryList, {
-            title: 'NewCountryList',
+          schema: getModelSchemaRef(Country, {
+            title: 'NewCountry',
             exclude: ['id'],
           }),
         },
       },
     })
-    countryList: Omit<CountryList, 'id'>,
-  ): Promise<CountryList> {
-    return this.countryListRepository.create(countryList);
+    country: Omit<Country, 'id'>,
+  ): Promise<Country> {
+    return this.countryRepository.create(country);
   }
 
-  @get('/country-lists/count')
+  @get('/countries')
   @response(200, {
-    description: 'CountryList model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(CountryList) where?: Where<CountryList>,
-  ): Promise<Count> {
-    return this.countryListRepository.count(where);
-  }
-
-  @get('/country-lists')
-  @response(200, {
-    description: 'Array of CountryList model instances',
+    description: 'Array of Country model instances',
     content: {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(CountryList, {includeRelations: true}),
+          items: getModelSchemaRef(Country, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(CountryList) filter?: Filter<CountryList>,
-  ): Promise<CountryList[]> {
-    return this.countryListRepository.find(filter);
+    @param.filter(Country) filter?: Filter<Country>,
+  ): Promise<Country[]> {
+    return this.countryRepository.find(filter);
   }
 
-  @patch('/country-lists')
+  @get('/countries/{id}')
   @response(200, {
-    description: 'CountryList PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(CountryList, {partial: true}),
-        },
-      },
-    })
-    countryList: CountryList,
-    @param.where(CountryList) where?: Where<CountryList>,
-  ): Promise<Count> {
-    return this.countryListRepository.updateAll(countryList, where);
-  }
-
-  @get('/country-lists/{id}')
-  @response(200, {
-    description: 'CountryList model instance',
+    description: 'Country model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(CountryList, {includeRelations: true}),
+        schema: getModelSchemaRef(Country, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(CountryList, {exclude: 'where'}) filter?: FilterExcludingWhere<CountryList>
-  ): Promise<CountryList> {
-    return this.countryListRepository.findById(id, filter);
+    @param.filter(Country, {exclude: 'where'}) filter?: FilterExcludingWhere<Country>
+  ): Promise<Country> {
+    return this.countryRepository.findById(id, filter);
   }
 
-  @patch('/country-lists/{id}')
+  @patch('/countries/{id}')
   @response(204, {
-    description: 'CountryList PATCH success',
+    description: 'Country PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(CountryList, {partial: true}),
+          schema: getModelSchemaRef(Country, {partial: true}),
         },
       },
     })
-    countryList: CountryList,
+    country: Country,
   ): Promise<void> {
-    await this.countryListRepository.updateById(id, countryList);
+    await this.countryRepository.updateById(id, country);
   }
 
-  @put('/country-lists/{id}')
-  @response(204, {
-    description: 'CountryList PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() countryList: CountryList,
-  ): Promise<void> {
-    await this.countryListRepository.replaceById(id, countryList);
-  }
-
-  @del('/country-lists/{id}')
-  @response(204, {
-    description: 'CountryList DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.countryListRepository.deleteById(id);
-  }
 }

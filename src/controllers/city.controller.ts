@@ -1,150 +1,97 @@
 import {
-  Count,
-  CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  repository
 } from '@loopback/repository';
 import {
-  del,
   get,
   getModelSchemaRef,
   param,
   patch,
   post,
-  put,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import {CityList} from '../models';
-import {CityListRepository} from '../repositories';
+import {City} from '../models';
+import {CityRepository} from '../repositories';
 
 export class CityController {
   constructor(
-    @repository(CityListRepository)
-    public cityListRepository: CityListRepository,
+    @repository(CityRepository)
+    public cityRepository: CityRepository,
   ) { }
 
-  @post('/city-lists')
+  @post('/cities')
   @response(200, {
-    description: 'CityList model instance',
-    content: {'application/json': {schema: getModelSchemaRef(CityList)}},
+    description: 'City model instance',
+    content: {'application/json': {schema: getModelSchemaRef(City)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(CityList, {
-            title: 'NewCityList',
+          schema: getModelSchemaRef(City, {
+            title: 'NewCity',
             exclude: ['id'],
           }),
         },
       },
     })
-    cityList: Omit<CityList, 'id'>,
-  ): Promise<CityList> {
-    return this.cityListRepository.create(cityList);
+    city: Omit<City, 'id'>,
+  ): Promise<City> {
+    return this.cityRepository.create(city);
   }
 
-  @get('/city-lists/count')
+  @get('/cities')
   @response(200, {
-    description: 'CityList model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(CityList) where?: Where<CityList>,
-  ): Promise<Count> {
-    return this.cityListRepository.count(where);
-  }
-
-  @get('/city-lists')
-  @response(200, {
-    description: 'Array of CityList model instances',
+    description: 'Array of City model instances',
     content: {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(CityList, {includeRelations: true}),
+          items: getModelSchemaRef(City, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(CityList) filter?: Filter<CityList>,
-  ): Promise<CityList[]> {
-    return this.cityListRepository.find(filter);
+    @param.filter(City) filter?: Filter<City>,
+  ): Promise<City[]> {
+    return this.cityRepository.find({where: {status: true}});
   }
 
-  @patch('/city-lists')
+  @get('/cities/{id}')
   @response(200, {
-    description: 'CityList PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(CityList, {partial: true}),
-        },
-      },
-    })
-    cityList: CityList,
-    @param.where(CityList) where?: Where<CityList>,
-  ): Promise<Count> {
-    return this.cityListRepository.updateAll(cityList, where);
-  }
-
-  @get('/city-lists/{id}')
-  @response(200, {
-    description: 'CityList model instance',
+    description: 'City model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(CityList, {includeRelations: true}),
+        schema: getModelSchemaRef(City, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(CityList, {exclude: 'where'}) filter?: FilterExcludingWhere<CityList>
-  ): Promise<CityList> {
-    return this.cityListRepository.findById(id, filter);
+    @param.filter(City, {exclude: 'where'}) filter?: FilterExcludingWhere<City>
+  ): Promise<City> {
+    return this.cityRepository.findById(id, filter);
   }
 
-  @patch('/city-lists/{id}')
+  @patch('/cities/{id}')
   @response(204, {
-    description: 'CityList PATCH success',
+    description: 'City PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(CityList, {partial: true}),
+          schema: getModelSchemaRef(City, {partial: true}),
         },
       },
     })
-    cityList: CityList,
+    city: City,
   ): Promise<void> {
-    await this.cityListRepository.updateById(id, cityList);
+    await this.cityRepository.updateById(id, city);
   }
 
-  @put('/city-lists/{id}')
-  @response(204, {
-    description: 'CityList PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() cityList: CityList,
-  ): Promise<void> {
-    await this.cityListRepository.replaceById(id, cityList);
-  }
-
-  @del('/city-lists/{id}')
-  @response(204, {
-    description: 'CityList DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.cityListRepository.deleteById(id);
-  }
 }
