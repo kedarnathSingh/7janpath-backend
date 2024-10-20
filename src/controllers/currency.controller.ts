@@ -14,13 +14,15 @@ import {
   response
 } from '@loopback/rest';
 import {Currency} from '../models';
-import {CurrencyRepository} from '../repositories';
+import {CurrencyRepository, SettingRepository} from '../repositories';
 
 
 export class CurrencyController {
   constructor(
     @repository(CurrencyRepository)
     public currencyRepository: CurrencyRepository,
+    @repository(SettingRepository)
+    public settingRepository: SettingRepository,
   ) { }
 
   @post('/currencies/exchange-rates')
@@ -42,49 +44,74 @@ export class CurrencyController {
     })
     currency: Omit<Currency, 'id'>,
   ): Promise<any> {
-    var request = require('request');
+    const request = require('request');
+
     let data: any;
+
     request('https://openexchangerates.org/api/latest.json?app_id=daa32f7dd7544fb192afab3429d98624&base=USD', async (error: any, response: any, body: any) => {
-      if (!error && response.statusCode == 200) {
-        if (body) {
-          data = JSON.parse(body);
-          await this.currencyRepository.deleteAll();
-          const arr: any = ['AUD', 'GBP', 'INR', 'IQD', 'MYR', 'SGD', 'THB', 'USD'];
-          const filteredRates = Object.keys(data.rates || {})
-            .filter(currency => arr.includes(currency))
-            .reduce((acc: any, currency) => {
-              acc[currency] = data.rates[currency];
-              return acc;
-            }, {});
-          let date = new Date();
-          let id: number = 1;
-          for (var key in filteredRates) {
-            let payload: Currency = {
-              id: id++,
-              name: key,
-              symbol: key,
-              rate: filteredRates[key],
-              status: true,
-              priority: 0,
-              created_at: date.toString(),
-              updated_at: date.toString(),
-              getId: function () {
-                throw new Error('Function not implemented.');
-              },
-              getIdObject: function (): Object {
-                throw new Error('Function not implemented.');
-              },
-              toJSON: function (): Object {
-                throw new Error('Function not implemented.');
-              },
-              toObject: function (options?: Options): Object {
-                throw new Error('Function not implemented.');
-              }
-            }
-            this.currencyRepository.create(payload);
+      if (error || response.statusCode !== 200) {
+        console.error('Failed to fetch data:', error);
+        return;
+      }
+
+      data = JSON.parse(body);
+      if (!data.rates) {
+        console.error('No rates found in response.');
+        return;
+      }
+
+      await this.currencyRepository.deleteAll();
+      const commissions = await this.settingRepository.find({
+        where: {page_slug: {between: ['buy_commision', 'sell_commision']}}
+      });
+
+      const arr: string[] = ['AUD', 'GBP', 'INR', 'IQD', 'MYR', 'SGD', 'THB', 'USD'];
+      const filteredRates = Object.keys(data.rates)
+        .filter(currency => arr.includes(currency))
+        .reduce((acc: Record<string, number>, currency) => {
+          acc[currency] = data.rates[currency];
+          return acc;
+        }, {});
+
+      const date = new Date();
+      const commissionTypes = commissions.map((comm: any) => ({
+        type: comm.comm_type,
+        value: parseFloat(comm.content)
+      }));
+
+      let id = 1;
+
+      for (const key in filteredRates) {
+        const rate = filteredRates[key];
+        const buy_rate = this.currencyRepository.calculateRate(rate, commissionTypes[0]);
+        const sell_rate = this.currencyRepository.calculateRate(rate, commissionTypes[1]);
+
+        const payload: Currency = {
+          id: id++,
+          name: key,
+          symbol: key,
+          rate,
+          status: true,
+          priority: 0,
+          created_at: date.toString(),
+          updated_at: date.toString(),
+          buy_rate,
+          sell_rate,
+          getId: function () {
+            throw new Error('Function not implemented.');
+          },
+          getIdObject: function (): Object {
+            throw new Error('Function not implemented.');
+          },
+          toJSON: function (): Object {
+            throw new Error('Function not implemented.');
+          },
+          toObject: function (options?: Options): Object {
+            throw new Error('Function not implemented.');
           }
-          return;
-        }
+        };
+
+        await this.currencyRepository.create(payload);
       }
     });
   }

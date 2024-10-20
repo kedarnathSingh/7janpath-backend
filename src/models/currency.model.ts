@@ -59,6 +59,17 @@ export class Currency extends Entity {
   })
   priority: number;
 
+  @property({
+    type: 'number',
+    required: true,
+  })
+  buy_rate: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  sell_rate: number;
 
   constructor(data?: Partial<Currency>) {
     super(data);

@@ -108,7 +108,7 @@ export class SettingController {
     // @param.filter(Setting, {exclude: 'where'}) filter?: FilterExcludingWhere<Setting>
   ): Promise<any> {
     // return this.settingRepository.findById(id, filter);
-    return this.settingRepository.findOne({where: {slug: slug}});
+    return this.settingRepository.findOne({where: {page_slug: slug}});
   }
 
   @patch('/settings/{id}')
