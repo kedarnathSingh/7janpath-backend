@@ -59,20 +59,20 @@ export class CurrencyController {
         console.error('No rates found in response.');
         return;
       }
-
       await this.currencyRepository.deleteAll();
       const commissions = await this.settingRepository.find({
         where: {page_slug: {between: ['buy_commision', 'sell_commision']}}
       });
 
-      const arr: string[] = ['AUD', 'GBP', 'INR', 'IQD', 'MYR', 'SGD', 'THB', 'USD'];
+      const arr: string[] = ['INR', 'USD', 'EUR', 'GBP', 'AUD', 'CAD', 'NZD', 'AED', 'SGD', 'THB', 'CHF', 'JPY', 'HKD', 'MYR', 'SAR', 'CNY', 'IDR', 'TRY', 'VND'];
       const filteredRates = Object.keys(data.rates)
         .filter(currency => arr.includes(currency))
         .reduce((acc: Record<string, number>, currency) => {
           acc[currency] = data.rates[currency];
           return acc;
         }, {});
-
+      const inrValue = filteredRates.INR;
+      delete filteredRates.INR;
       const date = new Date();
       const commissionTypes = commissions.map((comm: any) => ({
         type: comm.comm_type,
@@ -82,7 +82,7 @@ export class CurrencyController {
       let id = 1;
 
       for (const key in filteredRates) {
-        const rate = filteredRates[key];
+        const rate = parseFloat((inrValue / filteredRates[key]).toFixed(3));
         const buy_rate = this.currencyRepository.calculateRate(rate, commissionTypes[0]);
         const sell_rate = this.currencyRepository.calculateRate(rate, commissionTypes[1]);
 

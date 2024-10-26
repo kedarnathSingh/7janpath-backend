@@ -16,9 +16,9 @@ export class CurrencyRepository extends DefaultCrudRepository<
 
   calculateRate(rate: number, commission: {type: string; value: number}): number {
     if (commission.type === 'percentage') {
-      return rate + (rate * commission.value) / 100;
+      return parseFloat((rate + (rate * commission.value) / 100).toFixed(3));
     } else {
-      return rate + commission.value;
+      return parseFloat((rate + commission.value).toFixed(3));
     }
   };
 }

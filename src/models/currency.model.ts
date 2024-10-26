@@ -30,7 +30,10 @@ export class Currency extends Entity {
 
   @property({
     type: 'number',
+    dataType: 'decimal',
     required: true,
+    precision: 10,
+    scale: 3
   })
   rate: number;
 
@@ -61,13 +64,19 @@ export class Currency extends Entity {
 
   @property({
     type: 'number',
+    dataType: 'decimal',
     required: true,
+    precision: 10,
+    scale: 3
   })
   buy_rate: number;
 
   @property({
     type: 'number',
+    dataType: 'decimal',
     required: true,
+    precision: 10,
+    scale: 3
   })
   sell_rate: number;
 

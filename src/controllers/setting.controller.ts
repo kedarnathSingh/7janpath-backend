@@ -148,7 +148,7 @@ export class SettingController {
     await this.settingRepository.deleteById(id);
   }
 
-  @get('/settings/exchange-rates')
+  @get('/settings/send-mail')
   @response(200, {
     description: 'Array of Setting model instances',
     content: {
@@ -159,41 +159,29 @@ export class SettingController {
       },
     },
   })
-  async findExchangeRates(
+  async sendMails(
   ): Promise<any> {
-
-    // const nodemailer = require("nodemailer");
-
-    // const transporter = nodemailer.createTransport({
-    //   // "type": "smtp",
-    //   "host": "smtp.gmail.com",
-    //   "secure": false,
-    //   "port": 587,
-    //   "tls": {
-    //     "rejectUnauthorized": false
-    //   }, // true for port 465, false for other ports
-    //   auth: {
-    //     user: "ashishiimtion.99@gmail.com",
-    //     pass: "Ashu@1901",
-    //   },
-    // });
-    // const info = await transporter.sendMail({
-    //   from: "ashishiimtion.99@gmail.com", // sender address
-    //   to: "akkatiyar786@gmail.com", // list of receivers
-    //   subject: "Hello ✔", // Subject line
-    //   text: "Hello world?", // plain text body
-    //   html: "<b>Hello world?</b>", // html body
-    // });
-
-    // console.log("Message sent: %s", info.messageId);
-
-    var request = require('request');
-    // request('https://openexchangerates.org/api/latest.json?app_id=daa32f7dd7544fb192afab3429d98624&base=USD', function (error: any, response: any, body: any) {
-    return request('https://apicrm.7travelmoney.com/currencies/list', function (error: any, response: any, body: any) {
-      if (!error && response.statusCode == 200) {
-        console.log(body);
-        return body;
-      }
+    const nodemailer = require("nodemailer");
+    const transporter = nodemailer.createTransport({
+      // "type": "smtp",
+      "host": "smtpout.secureserver.net",
+      "secure": false,
+      "port": 465,
+      "tls": {
+        "rejectUnauthorized": true
+      }, // true for port 465, false for other ports
+      auth: {
+        user: "business@7travelmoney.com",
+        pass: "Noida@2704",
+      },
     });
+    const info = await transporter.sendMail({
+      from: "business@7travelmoney.com", // sender address
+      to: "akkatiyar786@gmail.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Hello world?", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+    console.log("Message sent: %s", info.messageId);
   }
 }
