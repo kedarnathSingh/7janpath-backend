@@ -8,3 +8,4 @@ export * from './faq.model';
 export * from './setting.model';
 export * from './testimonial.model';
 
+export * from './enquiry.model';

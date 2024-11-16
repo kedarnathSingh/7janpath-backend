@@ -1,3 +1,4 @@
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,144 +8,148 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
-import {EnquiryType} from '../models';
-import {EnquiryTypeRepository} from '../repositories';
+import {Enquiry} from '../models';
+import {EnquiryRepository} from '../repositories';
+import {EmailService} from '../services/email.service';
 
 export class EnquiryController {
   constructor(
-    @repository(EnquiryTypeRepository)
-    public enquiryTypeRepository : EnquiryTypeRepository,
-  ) {}
+    @repository(EnquiryRepository)
+    public enquiryRepository: EnquiryRepository,
+    @inject('services.EmailService')
+    protected emailService: EmailService,
+  ) { }
 
   @post('/enquiry')
   @response(200, {
-    description: 'EnquiryType model instance',
-    content: {'application/json': {schema: getModelSchemaRef(EnquiryType)}},
+    description: 'Enquiry model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Enquiry)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(EnquiryType, {
-            title: 'NewEnquiryType',
+          schema: getModelSchemaRef(Enquiry, {
+            title: 'NewEnquiry',
             exclude: ['id'],
           }),
         },
       },
     })
-    enquiryType: Omit<EnquiryType, 'id'>,
-  ): Promise<EnquiryType> {
-    return this.enquiryTypeRepository.create(enquiryType);
+    enquiry: Omit<Enquiry, 'id'>,
+  ): Promise<Enquiry> {
+    // await this.emailService.sendEmail(enquiry.email, 'Welcome!', 'Thanks for registering!');
+    return this.enquiryRepository.create(enquiry);
   }
 
   @get('/enquiry/count')
   @response(200, {
-    description: 'EnquiryType model count',
+    description: 'Enquiry model count',
     content: {'application/json': {schema: CountSchema}},
   })
   async count(
-    @param.where(EnquiryType) where?: Where<EnquiryType>,
+    @param.where(Enquiry) where?: Where<Enquiry>,
   ): Promise<Count> {
-    return this.enquiryTypeRepository.count(where);
+    return this.enquiryRepository.count(where);
   }
 
   @get('/enquiry')
   @response(200, {
-    description: 'Array of EnquiryType model instances',
+    description: 'Array of Enquiry model instances',
     content: {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(EnquiryType, {includeRelations: true}),
+          items: getModelSchemaRef(Enquiry, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(EnquiryType) filter?: Filter<EnquiryType>,
-  ): Promise<EnquiryType[]> {
-    return this.enquiryTypeRepository.find(filter);
+    @param.filter(Enquiry) filter?: Filter<Enquiry>,
+  ): Promise<Enquiry[]> {
+    return this.enquiryRepository.find(filter);
   }
 
   @patch('/enquiry')
   @response(200, {
-    description: 'EnquiryType PATCH success count',
+    description: 'Enquiry PATCH success count',
     content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(EnquiryType, {partial: true}),
+          schema: getModelSchemaRef(Enquiry, {partial: true}),
         },
       },
     })
-    enquiryType: EnquiryType,
-    @param.where(EnquiryType) where?: Where<EnquiryType>,
+    enquiry: Enquiry,
+    @param.where(Enquiry) where?: Where<Enquiry>,
   ): Promise<Count> {
-    return this.enquiryTypeRepository.updateAll(enquiryType, where);
+    return this.enquiryRepository.updateAll(enquiry, where);
   }
 
   @get('/enquiry/{id}')
   @response(200, {
-    description: 'EnquiryType model instance',
+    description: 'Enquiry model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(EnquiryType, {includeRelations: true}),
+        schema: getModelSchemaRef(Enquiry, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(EnquiryType, {exclude: 'where'}) filter?: FilterExcludingWhere<EnquiryType>
-  ): Promise<EnquiryType> {
-    return this.enquiryTypeRepository.findById(id, filter);
+    @param.filter(Enquiry, {exclude: 'where'}) filter?: FilterExcludingWhere<Enquiry>
+  ): Promise<Enquiry> {
+    return this.enquiryRepository.findById(id, filter);
   }
 
   @patch('/enquiry/{id}')
   @response(204, {
-    description: 'EnquiryType PATCH success',
+    description: 'Enquiry PATCH success',
   })
   async updateById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(EnquiryType, {partial: true}),
+          schema: getModelSchemaRef(Enquiry, {partial: true}),
         },
       },
     })
-    enquiryType: EnquiryType,
+    enquiry: Enquiry,
   ): Promise<void> {
-    await this.enquiryTypeRepository.updateById(id, enquiryType);
+    await this.enquiryRepository.updateById(id, enquiry);
   }
 
   @put('/enquiry/{id}')
   @response(204, {
-    description: 'EnquiryType PUT success',
+    description: 'Enquiry PUT success',
   })
   async replaceById(
     @param.path.number('id') id: number,
-    @requestBody() enquiryType: EnquiryType,
+    @requestBody() enquiry: Enquiry,
   ): Promise<void> {
-    await this.enquiryTypeRepository.replaceById(id, enquiryType);
+    await this.enquiryRepository.replaceById(id, enquiry);
   }
 
   @del('/enquiry/{id}')
   @response(204, {
-    description: 'EnquiryType DELETE success',
+    description: 'Enquiry DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.enquiryTypeRepository.deleteById(id);
+    await this.enquiryRepository.deleteById(id);
   }
 }

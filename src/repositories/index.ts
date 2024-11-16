@@ -7,3 +7,4 @@ export * from './setting.repository';
 export * from './state.repository';
 export * from './testimonial.repository';
 
+export * from './enquiry.repository';

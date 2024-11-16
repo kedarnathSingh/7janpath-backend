@@ -1,14 +1,15 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {EmailService} from './services/email.service';
 
 export {ApplicationConfig};
 
@@ -40,5 +41,6 @@ export class JanpathApiApplication extends BootMixin(
         nested: true,
       },
     };
+    this.bind('services.EmailService').toClass(EmailService);
   }
 }
