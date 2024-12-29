@@ -9,3 +9,5 @@ export * from './faq.controller';
 export * from './feedback.controller';
 export * from './setting.controller';
 
+export * from './contactus.controller';
+export * from './currency-setting.controller';

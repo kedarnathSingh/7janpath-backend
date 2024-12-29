@@ -18,6 +18,12 @@ export class Enquiry extends Entity {
 
   @property({
     type: 'string',
+    required: false,
+  })
+  order_number: string;
+
+  @property({
+    type: 'string',
     required: true,
   })
   name: string;
@@ -111,6 +117,18 @@ export class Enquiry extends Entity {
     required: true,
   })
   updated_at: string;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  service_charge: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  gst: number;
 
   // Define well-known properties here
 

@@ -82,12 +82,6 @@ export class Setting extends Entity {
   })
   meta_keyword?: string;
 
-  @property({
-    type: 'string',
-    default: null,
-  })
-  comm_type?: string;
-
   // Define well-known properties here
 
   // Indexer property to allow additional data

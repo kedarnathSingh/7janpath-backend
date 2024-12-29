@@ -165,7 +165,7 @@ export class SettingController {
   })
   async sendMails(
   ): Promise<any> {
-    await this.emailService.sendEmail('akkatiyar786@gmail.com', 'Welcome!', 'Thanks for registering!');
+    //  await this.emailService.sendEmail('akkatiyar786@gmail.com', 'Welcome!', 'Thanks for registering!');
 
     // const nodemailer = require("nodemailer");
     // const transporter = nodemailer.createTransport({
