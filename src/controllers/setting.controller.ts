@@ -164,30 +164,7 @@ export class SettingController {
     },
   })
   async sendMails(
-  ): Promise<any> {
-    //  await this.emailService.sendEmail('akkatiyar786@gmail.com', 'Welcome!', 'Thanks for registering!');
-
-    // const nodemailer = require("nodemailer");
-    // const transporter = nodemailer.createTransport({
-    //   // "type": "smtp",
-    //   "host": "smtpout.secureserver.net",
-    //   "secure": false,
-    //   "port": 465,
-    //   "tls": {
-    //     "rejectUnauthorized": true
-    //   }, // true for port 465, false for other ports
-    //   auth: {
-    //     user: "business@7travelmoney.com",
-    //     pass: "Noida@2704",
-    //   },
-    // });
-    // const info = await transporter.sendMail({
-    //   from: "business@7travelmoney.com", // sender address
-    //   to: "akkatiyar786@gmail.com", // list of receivers
-    //   subject: "Hello ✔", // Subject line
-    //   text: "Hello world?", // plain text body
-    //   html: "<b>Hello world?</b>", // html body
-    // });
+  ): Promise<any> { 
     // console.log("Message sent: %s", info.messageId);
   }
 }
