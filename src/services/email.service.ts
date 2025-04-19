@@ -7,26 +7,61 @@ export class EmailService {
 
   constructor() {
     // Set up transporter using Gmail SMTP
+    // this.transporter = nodemailer.createTransport({
+    //   //type: 'smtp',
+    //   host: 'smtp.gmail.com',
+    //   port: 465,
+    //   tls: {
+    //     rejectUnauthorized: false,
+    //   },
+    //   auth: {
+    //     user: 'ashishiimtion.99@gmail.com', // Your Gmail address
+    //     pass: 'bcgx iecm pdgs uccf', // Your Gmail password or App Password
+    //   },
+    //   secure: true, // Use SSL
+    // });
+
+    //const nodemailer = require("nodemailer");
+    // this.transporter = nodemailer.createTransport({
+    //   // "type": "smtp",
+    //   "host": "smtp.secureserver.net",
+    //   "secure": true,
+    //   "port": 587,
+    //   "tls": {
+    //     "rejectUnauthorized": false
+    //   }, // true for port 465, false for other ports
+    //   auth: {
+    //     user: "business@7travelmoney.com",
+    //     pass: "Noida@2704",
+    //   },
+    // });
     this.transporter = nodemailer.createTransport({
-      //type: 'smtp',
-      host: 'smtp.gmail.com',
-      port: 465,
-      tls: {
-        rejectUnauthorized: false,
-      },
-      auth: {
-        user: 'ashishiimtion.99@gmail.com', // Your Gmail address
-        pass: 'bcgx iecm pdgs uccf', // Your Gmail password or App Password
-      },
+      host: 'smtpout.secureserver.net',
+      port: 465, // Use 587 for TLS, 465 for SSL
       secure: true, // Use SSL
+      auth: {
+        user: 'business@7travelmoney.com', // Your GoDaddy email
+        pass: 'IndiaNoida112&', // Your email password
+      },
     });
+    // {
+    //   "name": "ashish",
+    //   "email": "ashishiimtion.99@gmail.com",
+    //   "mobile": 9876543210,
+    //   "inquiry_type": "test",
+    //   "location": "noida",
+    //   "message": "test message",
+    //   "status": true,
+    //   "created_at": "2025-01-28T16:08:22.005Z",
+    //   "updated_at": "2025-01-28T16:08:22.005Z"
+    // }
   }
 
   async sendEmail(to: string, subject: string, text: string): Promise<void> {
     const mailOptions = {
-      from: 'ashishiimtion.99@gmail.com',
+      from: 'business@7travelmoney.com',
       to,
-      cc: 'business@7travelmoney.com',
+      bcc: 'business@7travelmoney.com',
       subject,
       html: text,
     };

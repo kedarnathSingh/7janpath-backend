@@ -109,7 +109,7 @@ export class EnquiryController {
       }
       .email-container {
           width: 100%;
-          max-width: 600px;
+          max-width: 900px;
           margin: 0 auto;
           background-color: #ffffff;
           padding: 20px;
@@ -123,7 +123,7 @@ export class EnquiryController {
       .email-header h1 {
           font-size: 24px;
           margin: 0;
-          color: #007BFF;
+          color: black;
       }
       .email-content {
           font-size: 16px;
@@ -145,6 +145,7 @@ export class EnquiryController {
           padding: 8px;
           text-align: left;
           border-bottom: 1px solid #ddd;
+          font-weight: 400 !important;
       }
       .total {
           text-align: right;
@@ -157,10 +158,11 @@ export class EnquiryController {
       }
       .button {
           display: inline-block;
-          background-color: #007BFF;
+          background-color: #f9f9f9;
           color: black;
           padding: 10px 20px;
           text-decoration: none;
+          border: 1px solid #ddd;
           border-radius: 4px;
           margin-top: 10px;
       }
@@ -174,7 +176,7 @@ export class EnquiryController {
 <body>
   <div class="email-container">
       <div class="email-header">
-       <img src="https://7janpathforex.com/wp-content/uploads/2021/12/7janpath_Logo-removebg-preview.png" alt="7TravelMoney">
+       <img src="https://7travelmoney.com/images/logo.svg" style="width:200px;height:77px;" alt="7TravelMoney">
           <h1>Order Received Information</h1>
       </div>
       <div class="email-content">
@@ -213,9 +215,9 @@ export class EnquiryController {
 
                   </tr>
                   <!-- Additional currency rows can be added here -->
-                  <tr>
-                      <td colspan="7" class="total">Total Amount</td>
-                      <td class="total">Rs.${enquiry.total_amount}</td>
+                  <tr style="background-color:white;">
+                      <td colspan="7" class="total"><b>Total Amount</b></td>
+                      <td class="total"><b>Rs.${enquiry.total_amount}</b></td>
                   </tr>
               </table>
           </div>
@@ -223,8 +225,16 @@ export class EnquiryController {
           <p>If you have any questions or need further assistance, feel free to contact our support team.</p>
 
           <p>Best regards,<br>
-          7TravelMoney</p>
-          <a href="https://7travelmoney.com/contact-us" class="button">Contact Support</a>
+          7TravelMoney<br>
+          Ph. 9810474842</p>
+          <a href="https://7travelmoney.com/contact-us" style="display: inline-block;
+            background-color: #f9f9f9;
+            color: black;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;">Contact Support</a>
       </div>
       <div class="email-footer">
           <p>&copy; 2024 7TravelMoney. All rights reserved.</p>

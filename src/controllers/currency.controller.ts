@@ -39,7 +39,7 @@ export class CurrencyController {
         'application/json': {
           schema: getModelSchemaRef(Currency, {
             title: 'NewCurrency',
-            exclude: ['id'],
+            exclude: ['id', 'name', 'rate', 'buy_rate', 'sell_rate', 'status', 'priority'],
           }),
         },
       },
@@ -73,7 +73,7 @@ export class CurrencyController {
         }, {});
       const inrValue = filteredRates.INR;
       delete filteredRates.INR;
-      const date = new Date();
+      const date = new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'});
       // const commissionTypes = commissions.map((comm: any) => ({
       //   type: comm.comm_type,
       //   value: parseFloat(comm.content)

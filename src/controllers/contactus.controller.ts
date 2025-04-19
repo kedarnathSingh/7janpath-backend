@@ -59,7 +59,7 @@ export class ContactusController {
         }
         .email-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
             background-color: #ffffff;
             padding: 20px;
@@ -73,7 +73,7 @@ export class ContactusController {
         .email-header h1 {
             font-size: 24px;
             margin: 0;
-            color: #007BFF;
+            color: black;
         }
         .email-content {
             font-size: 16px;
@@ -94,9 +94,10 @@ export class ContactusController {
         }
         .button {
             display: inline-block;
-            background-color: #007BFF;
+            background-color: #f9f9f9;
             color: black;
             padding: 10px 20px;
+            border: 1px solid #ddd;
             text-decoration: none;
             border-radius: 4px;
             margin-top: 10px;
@@ -111,7 +112,7 @@ export class ContactusController {
 <body>
     <div class="email-container">
         <div class="email-header">
-        <img src="https://7janpathforex.com/wp-content/uploads/2021/12/7janpath_Logo-removebg-preview.png" alt="7TravelMoney">
+        <img src="https://7travelmoney.com/images/logo.svg" style="width:200px;height:77px;" alt="7TravelMoney">
             <h1>Contact Us Query Received</h1>
         </div>
         <div class="email-content">
@@ -121,7 +122,7 @@ export class ContactusController {
             <div class="query-summary">
                 <h3>Query Details:</h3>
                 <p><strong>Name:</strong> ${contactus.name}</p>
-                <p><strong>Email:</strong> ${contactus.email}</p>
+                <p><strong>Email:</strong>${contactus.email}</p>
                 <p><strong>Phone:</strong> ${contactus.mobile}</p>
                 <p><strong>Inquiry Type:</strong> ${contactus.inquiry_type}</p>
                 <p><strong>Your Message:</strong> ${contactus.message}</p>
@@ -132,9 +133,17 @@ export class ContactusController {
             <p>Thank you for contacting 7TravelMoney. We appreciate your patience and will respond to your inquiry as soon as possible.</p>
 
             <p>Best regards,<br>
-            7TravelMoney Support Team</p>
+            7TravelMoney Support Team
+            <br>Ph. 9810474842</p>
 
-             <a href="https://7travelmoney.com/contact-us" class="button">Contact Support</a>
+             <a href="https://7travelmoney.com/contact-us" style="display: inline-block;
+            background-color: #f9f9f9;
+            color: black;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;">Contact Support</a>
         </div>
         <div class="email-footer">
              <p>&copy; 2024 7TravelMoney. All rights reserved.</p>
