@@ -11,3 +11,5 @@ export * from './setting.controller';
 
 export * from './contactus.controller';
 export * from './currency-setting.controller';
+export * from './user.controller';
+

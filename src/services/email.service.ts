@@ -41,7 +41,7 @@ export class EmailService {
       secure: true, // Use SSL
       auth: {
         user: 'business@7travelmoney.com', // Your GoDaddy email
-        pass: 'IndiaNoida112&', // Your email password
+        pass: 'Nxone@502824', // Your email password- IndiaNoida112&
       },
     });
     // {

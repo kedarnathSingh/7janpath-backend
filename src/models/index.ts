@@ -14,3 +14,5 @@ export * from './enquiry.model';
 export * from './gst.model';
 
 export * from './custom.model';
+export * from './user.model';
+

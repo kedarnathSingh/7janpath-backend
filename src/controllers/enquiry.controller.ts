@@ -19,7 +19,7 @@ import {
   response,
 } from '@loopback/rest';
 import {Custom, Enquiry} from '../models';
-import {EnquiryRepository, GstRepository, SettingRepository} from '../repositories';
+import {EnquiryRepository, GstRepository, SettingRepository, UserRepository} from '../repositories';
 import {EmailService} from '../services/email.service';
 import {EnquiryService} from '../services/enquiry.service';
 
@@ -34,7 +34,9 @@ export class EnquiryController {
     @repository(GstRepository)
     public gstRepository: GstRepository,
     @inject('services.EnquiryService')
-    protected enquiryService: EnquiryService
+    protected enquiryService: EnquiryService,
+    @repository(UserRepository)
+    public userRepository: UserRepository,
   ) { }
 
   @post('/enquiry/order-summery')
@@ -243,6 +245,18 @@ export class EnquiryController {
 </body>
 </html>
 `;
+    const availableUser: any = await this.userRepository.findOne({where: {email: enquiry.email}});
+    if (!availableUser) {
+      const userData: any = {
+        "name": enquiry.name,
+        "email": enquiry.email,
+        "mobile": enquiry.mobile,
+        "address": enquiry.address,
+        "status": true,
+        "created_at": enquiry.created_at
+      }
+      this.userRepository.create(userData);
+    }
 
     const subject = `Order Enquiry - ${enquiry.order_number}`;
     await this.emailService.sendEmail(enquiry.email, subject, mailBody);

@@ -58,7 +58,7 @@ export class CurrencyController {
       if (!data.rates) {
         console.error('No rates found in response.');
         return;
-      }
+      } console.log(data);
       await this.currencyRepository.deleteAll();
       // const commissions = await this.settingRepository.find({
       //   where: {page_slug: {between: ['buy_commision', 'sell_commision']}}
@@ -73,7 +73,8 @@ export class CurrencyController {
         }, {});
       const inrValue = filteredRates.INR;
       delete filteredRates.INR;
-      const date = new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'});
+      const date = new Date();
+      // const date = new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'});
       // const commissionTypes = commissions.map((comm: any) => ({
       //   type: comm.comm_type,
       //   value: parseFloat(comm.content)
@@ -108,8 +109,8 @@ export class CurrencyController {
           priority: 0,
           created_at: date.toString(),
           updated_at: date.toString(),
-          buy_rate,
-          sell_rate,
+          buy_rate: +buy_rate,
+          sell_rate: +sell_rate,
           getId: function () {
             throw new Error('Function not implemented.');
           },
